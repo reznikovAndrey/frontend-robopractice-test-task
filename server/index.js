@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
-/* eslint-disable global-require */
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable */
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 const port = 8080;
 
 app.get('/api/users', (req, res) => {
