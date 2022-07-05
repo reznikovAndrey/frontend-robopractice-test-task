@@ -1,13 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 8080
+/* eslint-disable no-console */
+/* eslint-disable global-require */
+// eslint-disable-next-line import/no-extraneous-dependencies
+const express = require('express');
+
+const app = express();
+const port = 8080;
 
 app.get('/api/users', (req, res) => {
   res.send(
-      require('./data.json')
-  )
-})
+    require('./data.json'),
+  );
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
