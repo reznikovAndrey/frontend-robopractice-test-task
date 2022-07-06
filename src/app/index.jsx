@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import UsersStatistics from '../components/UsersStatistics';
-import apiUrl from '../utils';
+import { apiUrl } from '../utils';
 
 const App = () => {
   const [usersStats, setUsersStats] = useState([]);
