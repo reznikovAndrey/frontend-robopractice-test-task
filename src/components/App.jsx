@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState, useMemo } from 'react';
 import { Layout } from 'antd';
 
-import UsersStatistics from '../components/UsersStatistics';
+import UsersStatistics from './UsersStatistics';
 import {
   apiUrl, calcSummaryStatForDay, genEmptyStatsObj, calcSummaryStat,
 } from '../utils';
