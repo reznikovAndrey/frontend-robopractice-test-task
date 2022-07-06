@@ -5,13 +5,13 @@ import UsersStatistics from '../components/UsersStatistics';
 import apiUrl from '../utils';
 
 const App = () => {
-  const [users, setUsers] = useState([]);
+  const [usersStats, setUsersStats] = useState([]);
 
   useEffect(() => {
-    async function fetchUsers() {
+    async function fetchUsersStats() {
       try {
         const { data } = await axios.get(apiUrl);
-        setUsers(data);
+        setUsersStats(data);
       } catch (err) {
         const { name, message } = err;
 
@@ -25,10 +25,10 @@ const App = () => {
       }
     }
 
-    fetchUsers();
+    fetchUsersStats();
   }, []);
 
-  return <UsersStatistics />;
+  return <UsersStatistics usersStats={usersStats} />;
 };
 
 export default App;
