@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import UsersStatistics from '../components/UsersStatistics';
-import { apiUrl } from '../utils';
+import { apiUrl, calcSummaryStatForDay } from '../utils';
 
 const App = () => {
   const [usersStats, setUsersStats] = useState([]);
@@ -28,7 +28,21 @@ const App = () => {
     fetchUsersStats();
   }, []);
 
-  return <UsersStatistics usersStats={usersStats} />;
+  const normalizedData = useMemo(() => usersStats.map(({ id, Fullname: fullname, Days: days }) => {
+    const usersMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
+      const day = new Date(date).getDate();
+      const dayStat = calcSummaryStatForDay(start, end);
+      return { ...acc, [day]: dayStat };
+    }, {});
+
+    return {
+      key: id,
+      User: fullname,
+      ...usersMonthStat,
+    };
+  }), [usersStats]);
+
+  return <UsersStatistics data={normalizedData} />;
 };
 
 export default App;
