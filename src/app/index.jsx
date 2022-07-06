@@ -3,7 +3,9 @@ import { useEffect, useState, useMemo } from 'react';
 import { Layout } from 'antd';
 
 import UsersStatistics from '../components/UsersStatistics';
-import { apiUrl, calcSummaryStatForDay, genEmptyStatsObj } from '../utils';
+import {
+  apiUrl, calcSummaryStatForDay, genEmptyStatsObj, calcSummaryStat,
+} from '../utils';
 
 const { Content } = Layout;
 
@@ -38,7 +40,9 @@ const App = () => {
       const usersMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
         const day = new Date(date).getDate();
         const dayStat = calcSummaryStatForDay(start, end);
-        return { ...acc, [day]: dayStat, summary: 'test' };
+        const summary = calcSummaryStat(acc.summary, dayStat);
+
+        return { ...acc, [day]: dayStat, summary };
       }, emptyStatsObj);
 
       return {
