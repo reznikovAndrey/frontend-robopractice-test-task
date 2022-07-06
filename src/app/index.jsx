@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState, useMemo } from 'react';
 
 import UsersStatistics from '../components/UsersStatistics';
-import { apiUrl, calcSummaryStatForDay } from '../utils';
+import { apiUrl, calcSummaryStatForDay, noStatsObj } from '../utils';
 
 const App = () => {
   const [usersStats, setUsersStats] = useState([]);
@@ -33,11 +33,11 @@ const App = () => {
       const day = new Date(date).getDate();
       const dayStat = calcSummaryStatForDay(start, end);
       return { ...acc, [day]: dayStat };
-    }, {});
+    }, noStatsObj);
 
     return {
       key: id,
-      User: fullname,
+      fullname,
       ...usersMonthStat,
     };
   }), [usersStats]);

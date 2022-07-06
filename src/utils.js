@@ -3,6 +3,8 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
+const MONTH_DAYS_QUANTITY = 31;
+
 export const apiUrl = '/api/users';
 
 export const calcSummaryStatForDay = (start, end) => {
@@ -14,3 +16,7 @@ export const calcSummaryStatForDay = (start, end) => {
     .subtract(timeFrom.minute(), 'minutes')
     .format('HH:mm');
 };
+
+export const noStatsObj = Object.fromEntries(
+  [...Array(MONTH_DAYS_QUANTITY).keys()].map((key) => [key + 1, '0']),
+);
