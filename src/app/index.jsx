@@ -20,7 +20,7 @@ const App = () => {
             console.error(message);
             break;
           default:
-            throw new Error(`Unhandled error: ${err}`);
+            throw new Error(`Unhandled error: ${name}`);
         }
       }
     }
