@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState, useMemo } from 'react';
+import { Layout } from 'antd';
 
 import UsersStatistics from '../components/UsersStatistics';
 import { apiUrl, calcSummaryStatForDay, noStatsObj } from '../utils';
+
+const { Content } = Layout;
 
 const App = () => {
   const [usersStats, setUsersStats] = useState([]);
@@ -42,7 +45,13 @@ const App = () => {
     };
   }), [usersStats]);
 
-  return <UsersStatistics data={normalizedData} />;
+  return (
+    <Layout className="layout">
+      <Content style={{ padding: 50 }}>
+        <UsersStatistics data={normalizedData} />
+      </Content>
+    </Layout>
+  );
 };
 
 export default App;
