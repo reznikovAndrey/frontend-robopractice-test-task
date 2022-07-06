@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Layout } from 'antd';
 
 import UsersStatistics from '../components/UsersStatistics';
-import { apiUrl, calcSummaryStatForDay, noStatsObj } from '../utils';
+import { apiUrl, calcSummaryStatForDay, genEmptyStatsObj } from '../utils';
 
 const { Content } = Layout;
 
@@ -31,19 +31,23 @@ const App = () => {
     fetchUsersStats();
   }, []);
 
-  const normalizedData = useMemo(() => usersStats.map(({ id, Fullname: fullname, Days: days }) => {
-    const usersMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
-      const day = new Date(date).getDate();
-      const dayStat = calcSummaryStatForDay(start, end);
-      return { ...acc, [day]: dayStat };
-    }, noStatsObj);
+  const normalizedData = useMemo(() => {
+    const emptyStatsObj = genEmptyStatsObj();
 
-    return {
-      key: id,
-      fullname,
-      ...usersMonthStat,
-    };
-  }), [usersStats]);
+    return usersStats.map(({ id, Fullname: fullname, Days: days }) => {
+      const usersMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
+        const day = new Date(date).getDate();
+        const dayStat = calcSummaryStatForDay(start, end);
+        return { ...acc, [day]: dayStat, summary: 'test' };
+      }, emptyStatsObj);
+
+      return {
+        key: id,
+        fullname,
+        ...usersMonthStat,
+      };
+    });
+  }, [usersStats]);
 
   return (
     <Layout className="layout">

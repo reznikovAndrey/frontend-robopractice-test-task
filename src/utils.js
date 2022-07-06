@@ -17,6 +17,10 @@ export const calcSummaryStatForDay = (start, end) => {
     .format('HH:mm');
 };
 
-export const noStatsObj = Object.fromEntries(
-  [...Array(MONTH_DAYS_QUANTITY).keys()].map((key) => [key + 1, '0']),
-);
+export const genEmptyStatsObj = () => {
+  const noStatsObj = Object.fromEntries(
+    [...Array(MONTH_DAYS_QUANTITY).keys()].map((key) => [key + 1, '0']),
+  );
+  noStatsObj.summary = '0';
+  return noStatsObj;
+};
