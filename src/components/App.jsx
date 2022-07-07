@@ -72,7 +72,7 @@ const App = () => {
   const onInputChange = debounce(({ target: { value } }) => setInputVal(value), 500);
 
   return (
-    <Layout className="layout">
+    <Layout className="layout" style={{ minHeight: '100vh' }}>
       <Content style={{ padding: 50 }}>
         <Spin spinning={loading}>
           <SearchInput onChange={onInputChange} />

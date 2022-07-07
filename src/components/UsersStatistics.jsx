@@ -13,7 +13,7 @@ const UsersStatistics = ({ data }) => {
   }, []);
 
   return (
-    <Table dataSource={data}>
+    <Table dataSource={data} scroll={{ x: 'max-content' }}>
       <Column title="User" dataIndex="fullname" key="fullname" />
       {monthDaysCols.map((colName) => (
         <Column
