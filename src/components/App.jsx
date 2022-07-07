@@ -1,20 +1,25 @@
 import axios from 'axios';
 import { useEffect, useState, useMemo } from 'react';
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
+import { debounce } from 'lodash';
 
 import UsersStatistics from './UsersStatistics';
+import SearchInput from './SearchInput';
 import {
-  apiUrl, calcSummaryStatForDay, genEmptyStatsObj, calcSummaryStat,
+  apiUrl, calcSummaryStatForDay, genEmptyStatsObj, calcSummaryStat, searchUserByName,
 } from '../utils';
 
 const { Content } = Layout;
 
 const App = () => {
   const [usersStats, setUsersStats] = useState([]);
+  const [inputVal, setInputVal] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchUsersStats() {
       try {
+        setLoading(true);
         const { data } = await axios.get(apiUrl);
         setUsersStats(data);
       } catch (err) {
@@ -27,11 +32,22 @@ const App = () => {
           default:
             throw new Error(`Unhandled error: ${name}`);
         }
+      } finally {
+        setLoading(false);
       }
     }
-
     fetchUsersStats();
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    // emulate request in db oh some http request
+    setTimeout(() => {
+      const filteredData = searchUserByName(inputVal);
+      setUsersStats(filteredData);
+      setLoading(false);
+    }, 500);
+  }, [inputVal]);
 
   const normalizedData = useMemo(() => {
     const emptyStatsObj = genEmptyStatsObj();
@@ -53,10 +69,15 @@ const App = () => {
     });
   }, [usersStats]);
 
+  const onInputChange = debounce(({ target: { value } }) => setInputVal(value), 500);
+
   return (
     <Layout className="layout">
       <Content style={{ padding: 50 }}>
-        <UsersStatistics data={normalizedData} />
+        <Spin spinning={loading}>
+          <SearchInput onChange={onInputChange} />
+          <UsersStatistics data={normalizedData} />
+        </Spin>
       </Content>
     </Layout>
   );

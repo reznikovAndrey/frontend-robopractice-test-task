@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+const dataFromServer = require('./data/data.json');
+
 dayjs.extend(customParseFormat);
 
 const MONTH_DAYS_QUANTITY = 31;
@@ -42,4 +44,12 @@ export const genEmptyStatsObj = () => {
   );
   noStatsObj.summary = '0';
   return noStatsObj;
+};
+
+export const searchUserByName = (username) => {
+  if (!username) {
+    return dataFromServer;
+  }
+  return dataFromServer
+    .filter(({ Fullname: fullname }) => fullname.toLowerCase().includes(username.toLowerCase()));
 };
