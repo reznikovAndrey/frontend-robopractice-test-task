@@ -53,3 +53,14 @@ export const searchUserByName = (username) => {
   return dataFromServer
     .filter(({ Fullname: fullname }) => fullname.toLowerCase().includes(username.toLowerCase()));
 };
+
+export const sortDates = (prev, next, colname) => {
+  const [prevHours, prevMins = 0] = prev[colname].split(':').map((el) => +el);
+  const [nextHours, nextMins = 0] = next[colname].split(':').map((el) => +el);
+
+  if (prevHours === nextHours) {
+    return prevMins - nextMins;
+  }
+
+  return prevHours - nextHours;
+};
