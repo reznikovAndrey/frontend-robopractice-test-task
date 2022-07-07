@@ -14,12 +14,14 @@ const UsersStatistics = ({ data }) => {
 
   return (
     <Table dataSource={data} scroll={{ x: 'max-content' }}>
-      <Column title="User" dataIndex="fullname" key="fullname" />
+      <Column title="User" dataIndex="fullname" key="fullname" fixed="left" />
       {monthDaysCols.map((colName) => (
         <Column
           title={colName === 'summary' ? 'Monthly total' : colName}
           dataIndex={colName}
           key={colName}
+          align="right"
+          fixed={colName === 'summary' ? 'right' : null}
         />
       ))}
     </Table>
