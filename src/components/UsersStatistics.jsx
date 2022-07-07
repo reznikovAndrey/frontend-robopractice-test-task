@@ -1,19 +1,14 @@
-import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
 
-import { genEmptyStatsObj, sortDates } from '../utils';
-
-const { Column } = Table;
+import generateTableColumns from '../utils/generateTableColumns';
 
 const UsersStatistics = ({ data }) => {
-  const monthDaysCols = useMemo(() => {
-    const emptyStatsObj = genEmptyStatsObj();
-    return Object.keys(emptyStatsObj);
-  }, []);
+  const columns = generateTableColumns();
 
   return (
     <Table
+      columns={columns}
       dataSource={data}
       scroll={{ x: 'max-content' }}
       locale={{
@@ -21,25 +16,7 @@ const UsersStatistics = ({ data }) => {
         triggerAsc: 'сортировать по возрастанию',
         cancelSort: 'сбросить сортировку',
       }}
-    >
-      <Column title="User" dataIndex="fullname" key="fullname" fixed="left" />
-      {monthDaysCols.map((colName, idx) => (
-        <Column
-          title={colName === 'summary' ? 'Monthly total' : colName}
-          dataIndex={colName}
-          key={colName}
-          align="right"
-          fixed={colName === 'summary' ? 'right' : null}
-          sorter={(prev, next) => {
-            if (colName === 'summary') {
-              return sortDates(prev, next, colName);
-            }
-            return sortDates(prev, next, idx + 1);
-          }}
-          showSorterTooltip
-        />
-      ))}
-    </Table>
+    />
   );
 };
 
