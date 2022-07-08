@@ -13,6 +13,8 @@ const sortByTime = (prev, next, colname) => {
   return prevHours - nextHours;
 };
 
+const sortByName = (prev, next) => prev.fullname.localeCompare(next.fullname);
+
 const USERNAME_COLUMN = {
   title: 'User',
   dataIndex: 'fullname',
@@ -20,6 +22,8 @@ const USERNAME_COLUMN = {
   fixed: 'left',
   width: 200,
   render: (fullname) => fullname,
+  sorter: sortByName,
+  sortDirections: ['descend'],
 };
 
 const SUMMARY_COLUMN = {
