@@ -7,16 +7,7 @@ const UsersStatistics = ({ data }) => {
   const columns = generateTableColumns();
 
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      scroll={{ x: 'max-content' }}
-      locale={{
-        triggerDesc: 'сортировать по убыванию',
-        triggerAsc: 'сортировать по возрастанию',
-        cancelSort: 'сбросить сортировку',
-      }}
-    />
+    <Table columns={columns} dataSource={data} scroll={{ x: 'max-content' }} />
   );
 };
 
