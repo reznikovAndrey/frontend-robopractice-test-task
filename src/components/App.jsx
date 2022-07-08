@@ -5,9 +5,10 @@ import { debounce } from 'lodash';
 
 import UsersStatistics from './UsersStatistics';
 import SearchInput from './SearchInput';
-import {
-  apiUrl, calcSummaryStatForDay, genEmptyStatsObj, calcSummaryStat, searchUserByName,
-} from '../utils';
+import { API_URL, mock } from '../utils';
+import calcDayStat from '../utils/calcDayStat';
+import calcSummary from '../utils/calcSummary';
+import searchByUsername from '../utils/searchByUsername';
 
 const { Content } = Layout;
 
@@ -20,7 +21,7 @@ const App = () => {
     async function fetchUsersStats() {
       try {
         setLoading(true);
-        const { data } = await axios.get(apiUrl);
+        const { data } = await axios.get(API_URL);
         setUsersStats(data);
       } catch (err) {
         const { name, message } = err;
@@ -43,28 +44,30 @@ const App = () => {
     setLoading(true);
     // emulate request in db oh some http request
     setTimeout(() => {
-      const filteredData = searchUserByName(inputVal);
+      const filteredData = searchByUsername(inputVal);
       setUsersStats(filteredData);
       setLoading(false);
     }, 500);
   }, [inputVal]);
 
   const normalizedData = useMemo(() => {
-    const emptyStatsObj = genEmptyStatsObj();
+    const monthMock = {
+      summary: { ...mock },
+    };
 
     return usersStats.map(({ id, Fullname: fullname, Days: days }) => {
-      const usersMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
+      const userMonthStat = days.reduce((acc, { Date: date, End: end, Start: start }) => {
         const day = new Date(date).getDate();
-        const dayStat = calcSummaryStatForDay(start, end);
-        const summary = calcSummaryStat(acc.summary, dayStat);
+        const dayStat = calcDayStat(start, end);
+        const summary = calcSummary(acc.summary, dayStat);
 
         return { ...acc, [day]: dayStat, summary };
-      }, emptyStatsObj);
+      }, monthMock);
 
       return {
         key: id,
         fullname,
-        ...usersMonthStat,
+        ...userMonthStat,
       };
     });
   }, [usersStats]);

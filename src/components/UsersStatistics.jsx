@@ -24,7 +24,10 @@ UsersStatistics.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.number.isRequired,
     fullname: PropTypes.string.isRequired,
-    summary: PropTypes.string.isRequired,
+    summary: PropTypes.exact({
+      hours: PropTypes.number,
+      minutes: PropTypes.number,
+    }).isRequired,
   })).isRequired,
 };
 

@@ -1,11 +1,13 @@
+import { mock } from './index';
+
 const MONTH_DAYS_QUANTITY = 31;
 
 const sortByTime = (prev, next, colname) => {
-  const [prevHours, prevMins = 0] = prev[colname].split(':').map((el) => +el);
-  const [nextHours, nextMins = 0] = next[colname].split(':').map((el) => +el);
+  const { hours: prevHours, minutes: prevMinutes } = prev[colname] ?? mock;
+  const { hours: nextHours, minutes: nextMinutes } = next[colname] ?? mock;
 
   if (prevHours === nextHours) {
-    return prevMins - nextMins;
+    return prevMinutes - nextMinutes;
   }
 
   return prevHours - nextHours;
@@ -25,7 +27,7 @@ const SUMMARY_COLUMN = {
   key: 'summary',
   align: 'right',
   fixed: 'right',
-  render: (summaryData) => summaryData,
+  render: ({ hours, minutes }) => `${hours}:${minutes}`,
   sorter: (prev, next) => sortByTime(prev, next, 'summary'),
 };
 
@@ -37,7 +39,7 @@ export default () => {
       dataIndex: dayNum,
       key: dayNum,
       align: 'right',
-      render: (dayData) => dayData,
+      render: (obj) => (!obj ? '0' : `${obj.hours}:${obj.minutes}`),
       sorter: (prev, next) => sortByTime(prev, next, dayNum),
     }));
   return [
