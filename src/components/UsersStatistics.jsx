@@ -1,13 +1,45 @@
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
+import { useState } from 'react';
 
 import generateTableColumns from '../utils/generateTableColumns';
+import ResizableTitle from './ResizableTitle';
+import './UsersStatistics.css';
 
 const UsersStatistics = ({ data }) => {
-  const columns = generateTableColumns();
+  const [columns, setColumns] = useState(generateTableColumns());
+
+  const handleResize = (idx) => (e, { size }) => {
+    const newColumns = [...columns];
+    newColumns[idx] = {
+      ...newColumns[idx],
+      width: size.width,
+    };
+    setColumns(newColumns);
+  };
+
+  const mergedColumns = columns.map((col, idx) => ({
+    ...col,
+    onHeaderCell: ({ width }) => ({
+      width,
+      onResize: handleResize(idx),
+    }),
+  }));
+
+  const components = {
+    header: {
+      cell: ResizableTitle,
+    },
+  };
 
   return (
-    <Table columns={columns} dataSource={data} scroll={{ x: 'max-content' }} />
+    <Table
+      bordered
+      columns={mergedColumns}
+      dataSource={data}
+      scroll={{ x: 'max-content' }}
+      components={components}
+    />
   );
 };
 

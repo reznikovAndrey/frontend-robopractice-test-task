@@ -18,6 +18,7 @@ const USERNAME_COLUMN = {
   dataIndex: 'fullname',
   key: 'fullname',
   fixed: 'left',
+  width: 200,
   render: (fullname) => fullname,
 };
 
@@ -27,6 +28,7 @@ const SUMMARY_COLUMN = {
   key: 'summary',
   align: 'right',
   fixed: 'right',
+  width: 200,
   render: ({ hours, minutes }) => `${hours}:${minutes}`,
   sorter: (prev, next) => sortByTime(prev, next, 'summary'),
 };
@@ -39,6 +41,7 @@ export default () => {
       dataIndex: dayNum,
       key: dayNum,
       align: 'right',
+      width: 100,
       render: (obj) => (!obj ? '0' : `${obj.hours}:${obj.minutes}`),
       sorter: (prev, next) => sortByTime(prev, next, dayNum),
     }));
