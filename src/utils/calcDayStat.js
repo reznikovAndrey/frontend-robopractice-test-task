@@ -1,20 +1,28 @@
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-dayjs.extend(customParseFormat);
-
-const parseTime = (data) => dayjs(data, 'HH-mm');
+const parseTime = (data) => {
+  const [hours, minutes] = data.split('-').map((el) => +el);
+  return {
+    hours,
+    minutes,
+  };
+};
 
 export default (start, end) => {
-  const timeUpTo = parseTime(end);
-  const timeFrom = parseTime(start);
+  const { hours: endHours, minutes: endMinutes } = parseTime(end);
+  const { hours: startHours, minutes: startMinutes } = parseTime(start);
 
-  const timeDiff = timeUpTo
-    .subtract(timeFrom.hour(), 'hours')
-    .subtract(timeFrom.minute(), 'minutes');
+  const minutesDiff = endMinutes - startMinutes;
 
+  if (minutesDiff < 0) {
+    return {
+      hours: endHours - startHours - 1,
+      minutes: 60 - Math.abs(endMinutes - startMinutes),
+    };
+  }
+
+  const hours = endHours - startHours;
+  const minutes = minutesDiff;
   return {
-    hours: timeDiff.hour(),
-    minutes: timeDiff.minute(),
+    hours,
+    minutes,
   };
 };
