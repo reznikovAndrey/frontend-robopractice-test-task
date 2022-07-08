@@ -7,3 +7,7 @@
   cursor: col-resize;
   z-index: 1;
 }
+
+th:last-of-type .react-resizable-handle {
+  display: none;
+}

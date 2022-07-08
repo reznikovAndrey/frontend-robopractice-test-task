@@ -76,7 +76,7 @@ const App = () => {
 
   return (
     <Layout className="layout" style={{ minHeight: '100vh' }}>
-      <Content style={{ padding: 100 }}>
+      <Content style={{ padding: 50 }}>
         <Spin spinning={loading}>
           <SearchInput onChange={onInputChange} />
           <UsersStatistics data={normalizedData} />
